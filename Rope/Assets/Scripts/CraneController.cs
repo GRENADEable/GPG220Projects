@@ -5,7 +5,7 @@ using UnityEngine;
 public class CraneController : MonoBehaviour
 {
     #region Public Variables
-    public float maxForce;
+    public float yVel;
     #endregion
 
     #region Private Variables
@@ -16,7 +16,7 @@ public class CraneController : MonoBehaviour
     #region Callbacks
     void Start()
     {
-        vel = new Vector3(0, 100, 0);
+        vel = new Vector3(0, yVel, 0);
         rg = GetComponent<Rigidbody>();
     }
 
