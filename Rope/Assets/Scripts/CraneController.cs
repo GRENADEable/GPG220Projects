@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CraneController : MonoBehaviour
 {
@@ -10,13 +11,13 @@ public class CraneController : MonoBehaviour
 
     #region Private Variables
     private Rigidbody rg;
-    private Vector3 vel;
+    private Vector3 rotateVel;
     #endregion
 
     #region Callbacks
     void Start()
     {
-        vel = new Vector3(0, yVel, 0);
+        rotateVel = new Vector3(0, yVel, 0);
         rg = GetComponent<Rigidbody>();
     }
 
@@ -24,19 +25,20 @@ public class CraneController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.D))
         {
-            Quaternion rotate = Quaternion.Euler(vel * Time.deltaTime);
-            rg.MoveRotation(rg.rotation * rotate);
+            Quaternion rotateRight = Quaternion.Euler(rotateVel * Time.deltaTime);
+            rg.MoveRotation(rg.rotation * rotateRight);
         }
 
         if (Input.GetKey(KeyCode.A))
         {
-            Quaternion rotate = Quaternion.Euler(-vel * Time.deltaTime);
-            rg.MoveRotation(rg.rotation * rotate);
+            Quaternion rotateLeft = Quaternion.Euler(-rotateVel * Time.deltaTime);
+            rg.MoveRotation(rg.rotation * rotateLeft);
+        }
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            SceneManager.LoadScene("RopeScene");
         }
     }
-    #endregion
-
-    #region Functions
-
     #endregion
 }

@@ -18,11 +18,6 @@ public class RopeScript : MonoBehaviour
     {
         CreateRope();
     }
-
-    void Update()
-    {
-
-    }
     #endregion
 
     #region Functions
