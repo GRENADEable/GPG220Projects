@@ -1,2 +1,2 @@
-# RopePhysics
-Just a really basic rope physics by using HingeJoints
+# GPG220Projects
+Just working on my LOs
