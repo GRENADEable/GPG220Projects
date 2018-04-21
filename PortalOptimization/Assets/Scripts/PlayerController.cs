@@ -10,17 +10,22 @@ public class PlayerController : MonoBehaviour
     public float distance;
     public float angle;
     public GameObject[] objectsInScene;
+    public GameObject[] objectsInRoom;
     #endregion
 
     #region Private Variables
-    private Rigidbody rg;
     #endregion
 
     #region Callbacks
     void Start()
     {
-        rg = GetComponent<Rigidbody>();
         objectsInScene = GameObject.FindGameObjectsWithTag("Objects");
+        objectsInRoom = GameObject.FindGameObjectsWithTag("ObjectsInRoom");
+
+        for (int h = 0; h < objectsInRoom.Length; h++)
+        {
+            objectsInRoom[h].SetActive(false);
+        }
 
         for (int i = 0; i < objectsInScene.Length; i++)
         {
@@ -33,7 +38,7 @@ public class PlayerController : MonoBehaviour
         float movement = (Input.GetAxis("Vertical") * moveSpeed) * Time.deltaTime;
         float rotation = (Input.GetAxis("Horizontal") * roatationSpeed) * Time.deltaTime;
 
-        //Yeah the worst way to move the character :(.
+        //Yeah the worst way to move the character :(. I wanted to get over this so yeah.
         transform.Translate(0, 0, movement);
         transform.Rotate(0, rotation, 0);
 
@@ -65,17 +70,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
-    void OnCollisionStay(Collision other)
+    void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Door" && Input.GetKeyDown(KeyCode.E))
+        if (other.tag == "Door")
         {
-            other.gameObject.SetActive(false);
+            for (int m = 0; m < objectsInRoom.Length; m++)
+            {
+                objectsInRoom[m].SetActive(true);
+            }
         }
     }
-    #endregion
 
-    #region My Functions
-
+    void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "Door")
+        {
+            for (int n = 0; n < objectsInRoom.Length; n++)
+            {
+                objectsInRoom[n].SetActive(false);
+            }
+        }
+    }
     #endregion
 }
