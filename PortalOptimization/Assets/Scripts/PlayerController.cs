@@ -5,62 +5,77 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     #region Public Variables
-    public float movespeed;
-    public float rotateLock;
-    public float clampMag;
+    public float moveSpeed;
+    public float roatationSpeed;
+    public float distance;
+    public float angle;
+    public GameObject[] objectsInScene;
     #endregion
 
     #region Private Variables
     private Rigidbody rg;
-    private float inputX;
-    private float intputY;
     #endregion
 
     #region Callbacks
     void Start()
     {
         rg = GetComponent<Rigidbody>();
+        objectsInScene = GameObject.FindGameObjectsWithTag("Objects");
+
+        for (int i = 0; i < objectsInScene.Length; i++)
+        {
+            objectsInScene[i].SetActive(false);
+        }
     }
 
     void FixedUpdate()
     {
-        transform.rotation = Quaternion.Euler(rotateLock, transform.rotation.eulerAngles.y, rotateLock);
+        float movement = (Input.GetAxis("Vertical") * moveSpeed) * Time.deltaTime;
+        float rotation = (Input.GetAxis("Horizontal") * roatationSpeed) * Time.deltaTime;
 
-        Vector3 movementVector = InputPlayer();
+        //Yeah the worst way to move the character :(.
+        transform.Translate(0, 0, movement);
+        transform.Rotate(0, rotation, 0);
 
-        Movement(movementVector);
+        Vector3 totalDirection = Vector3.zero;
 
-        if (movementVector != Vector3.zero)
+        for (int j = 0; j < objectsInScene.Length; j++)
         {
-            transform.rotation = PlayerRotate();
+            distance = Vector3.Distance(transform.position, objectsInScene[j].transform.position);
+
+            Vector3 direction = objectsInScene[j].transform.position - transform.position;
+            totalDirection += direction;
+        }
+
+        angle = Vector3.Angle(totalDirection, transform.forward);
+
+        if (angle < 65 && distance < 30)
+        {
+            for (int l = 0; l < objectsInScene.Length; l++)
+            {
+                objectsInScene[l].SetActive(true);
+            }
+        }
+        else
+        {
+            for (int l = 0; l < objectsInScene.Length; l++)
+            {
+                objectsInScene[l].SetActive(false);
+            }
+        }
+    }
+
+
+    void OnCollisionStay(Collision other)
+    {
+        if (other.gameObject.tag == "Door" && Input.GetKeyDown(KeyCode.E))
+        {
+            other.gameObject.SetActive(false);
         }
     }
     #endregion
 
     #region My Functions
-    Vector3 InputPlayer()
-    {
-        Vector3 input;
-        float xInput = Input.GetAxis("Horizontal");
-        float yInput = Input.GetAxis("Vertical");
-        input = new Vector3(xInput, 0, yInput).normalized;
-        return input;
-    }
 
-    void Movement(Vector3 moveVector)
-    {
-        moveVector.x = moveVector.x * movespeed;
-        moveVector.z = moveVector.z * movespeed;
-        moveVector.y = 0f;
-        moveVector = Vector3.ClampMagnitude(moveVector, clampMag);
-        rg.AddForce(moveVector, ForceMode.Impulse);
-    }
-
-    Quaternion PlayerRotate()
-    {
-        Quaternion lookTowards;
-        lookTowards = Quaternion.LookRotation(InputPlayer());
-        return lookTowards;
-    }
     #endregion
 }
