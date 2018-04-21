@@ -9,11 +9,14 @@ public class PlayerController : MonoBehaviour
     public float roatationSpeed;
     public float distance;
     public float angle;
-    public GameObject[] objectsInScene;
-    public GameObject[] objectsInRoom;
+    public float drawDistance;
     #endregion
 
     #region Private Variables
+    private GameObject[] objectsInScene;
+    private GameObject[] objectsInRoom;
+    private GameObject camObj;
+    private Camera cam;
     #endregion
 
     #region Callbacks
@@ -21,6 +24,9 @@ public class PlayerController : MonoBehaviour
     {
         objectsInScene = GameObject.FindGameObjectsWithTag("Objects");
         objectsInRoom = GameObject.FindGameObjectsWithTag("ObjectsInRoom");
+        camObj = GameObject.FindGameObjectWithTag("MainCamera");
+        cam = camObj.GetComponent<Camera>();
+
 
         for (int h = 0; h < objectsInRoom.Length; h++)
         {
@@ -37,6 +43,17 @@ public class PlayerController : MonoBehaviour
     {
         float movement = (Input.GetAxis("Vertical") * moveSpeed) * Time.deltaTime;
         float rotation = (Input.GetAxis("Horizontal") * roatationSpeed) * Time.deltaTime;
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+
+        if (scroll > 0)
+        {
+            cam.farClipPlane += drawDistance;
+        }
+        if (scroll < 0)
+        {
+            cam.farClipPlane -= drawDistance;
+        }
+
 
         //Yeah the worst way to move the character :(. I wanted to get over this so yeah.
         transform.Translate(0, 0, movement);
