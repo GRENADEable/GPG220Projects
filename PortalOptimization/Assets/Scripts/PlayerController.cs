@@ -71,7 +71,7 @@ public class PlayerController : MonoBehaviour
 
         angle = Vector3.Angle(totalDirection, transform.forward);
 
-        if (angle < 65 && distance < 30)
+        if (angle < 60 && distance < 40)
         {
             for (int l = 0; l < objectsInScene.Length; l++)
             {
