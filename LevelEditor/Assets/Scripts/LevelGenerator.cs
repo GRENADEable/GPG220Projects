@@ -3,6 +3,7 @@
 public class LevelGenerator : MonoBehaviour
 {
     public Texture2D level;
+    public ColourToPrefab[] colourMap;
     // Use this for initialization
     void Start()
     {
@@ -11,22 +12,31 @@ public class LevelGenerator : MonoBehaviour
 
     void LevelGenerate()
     {
-        for (int i = 0; i < level.width; i++)
+        for (int x = 0; x < level.width; x++)
         {
-            for (int j = 0; j < level.height; j++)
+            for (int z = 0; z < level.height; z++)
             {
-                TileGenerate(i, j);
+                TileGenerate(x, z);
             }
         }
     }
 
-    void TileGenerate(int x, int y)
+    void TileGenerate(int x, int z)
     {
-        Color pixel = level.GetPixel(x, y);
-		
+        Color pixel = level.GetPixel(x, z);
+
         if (pixel.a == 0)
         {
             return;
+        }
+
+        foreach (ColourToPrefab mapColours in colourMap)
+        {
+            if (mapColours.colour.Equals(pixel))
+            {
+                Vector3 pos = new Vector3(x, 0, z);
+                Instantiate(mapColours.prefabObj, pos, Quaternion.identity);
+            }
         }
     }
 }
