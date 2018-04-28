@@ -3,9 +3,9 @@
 public class LevelGenerator : MonoBehaviour
 {
     public Texture2D level;
-    public ColourToPrefab[] colourMap;
+    public PixelToPrefab[] colourMap;
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         LevelGenerate();
     }
@@ -30,12 +30,13 @@ public class LevelGenerator : MonoBehaviour
             return;
         }
 
-        foreach (ColourToPrefab mapColours in colourMap)
+        foreach (PixelToPrefab mapColours in colourMap)
         {
             if (mapColours.colour.Equals(pixel))
             {
                 Vector3 pos = new Vector3(x, 0, z);
-                Instantiate(mapColours.prefabObj, pos, Quaternion.identity);
+                GameObject tilesObj = Instantiate(mapColours.prefabObj, pos, Quaternion.identity);
+                tilesObj.transform.parent = gameObject.transform;
             }
         }
     }
