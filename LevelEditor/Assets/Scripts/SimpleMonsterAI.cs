@@ -6,13 +6,9 @@ using UnityEngine.SceneManagement;
 public class SimpleMonsterAI : MonoBehaviour
 {
     #region Public Variables
-    /*public float chaseDistance;
-    public float attackDistance;*/
+
     public float distanceToPlayer;
     public ZombieStats zombieStats;
-    [Header("Forces")]
-    /*public int maxSpeed;
-    public int maxForce;*/
     #endregion
 
     #region Private Variables
