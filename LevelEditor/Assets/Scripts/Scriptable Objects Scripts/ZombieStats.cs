@@ -6,8 +6,9 @@ using UnityEngine;
 public class ZombieStats : ScriptableObject 
 {
 	public string zomName;
-	public float lookRange;
-	public GameObject player;
-	public GameObject zombie;
+	public float chaseDistance;
+	public float attackDistance;
 	public GameObject monster;
+	public int maxSpeed;
+	public int maxForce;
 }

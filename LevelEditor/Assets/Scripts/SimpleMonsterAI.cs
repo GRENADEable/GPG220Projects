@@ -6,18 +6,18 @@ using UnityEngine.SceneManagement;
 public class SimpleMonsterAI : MonoBehaviour
 {
     #region Public Variables
-    [Header("Variables For Zombies")]
-    public float chaseDistance;
-    public float attackDistance;
+    /*public float chaseDistance;
+    public float attackDistance;*/
     public float distanceToPlayer;
-    public GameObject player;
+    public ZombieStats zombieStats;
     [Header("Forces")]
-    public int maxSpeed;
-    public int maxForce;
+    /*public int maxSpeed;
+    public int maxForce;*/
     #endregion
 
     #region Private Variables
     private Rigidbody rg;
+    private GameObject player;
     #endregion
 
     #region  Callbacks
@@ -29,15 +29,13 @@ public class SimpleMonsterAI : MonoBehaviour
 
     void FixedUpdate()
     {
-
-
         distanceToPlayer = Vector3.Distance(transform.position, player.transform.position);
 
-        if (distanceToPlayer < chaseDistance)
+        if (distanceToPlayer < zombieStats.chaseDistance)
         {
-            Vector3 desiredVel = (player.transform.position - transform.position).normalized * maxSpeed;
+            Vector3 desiredVel = (player.transform.position - transform.position).normalized * zombieStats.maxSpeed;
             Vector3 steering = desiredVel - rg.velocity;
-            Vector3 steeringClamped = Vector3.ClampMagnitude(steering, maxForce);
+            Vector3 steeringClamped = Vector3.ClampMagnitude(steering, zombieStats.maxForce);
             rg.AddForce(steeringClamped);
 
             Vector3 target = player.transform.position + rg.velocity;
@@ -45,7 +43,7 @@ public class SimpleMonsterAI : MonoBehaviour
             transform.LookAt(target);
         }
 
-        if (distanceToPlayer < attackDistance)
+        if (distanceToPlayer < zombieStats.attackDistance)
         {
             SceneManager.LoadScene("Level");
         }
