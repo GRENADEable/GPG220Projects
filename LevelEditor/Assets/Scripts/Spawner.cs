@@ -17,7 +17,7 @@ public class Spawner : MonoBehaviour
     void Start()
     {
         tiles = GameObject.FindGameObjectsWithTag("MonsterSpawn");
-        //crowdTiles = GameObject.FindGameObjectsWithTag("CrowdSpawner");
+        crowdTiles = GameObject.FindGameObjectsWithTag("CrowdSpawner");
 
         Vector3 pos = new Vector3(0, 1f, 0);
 
@@ -25,8 +25,16 @@ public class Spawner : MonoBehaviour
         {
             if (tiles[i] != null)
             {
-                GameObject crowdObj = Instantiate(zomStats.monster, tiles[i].transform.position + pos, Quaternion.identity);
-                crowdObj.transform.parent = gameObject.transform;
+                GameObject monsterObj = Instantiate(zomStats.monster, tiles[i].transform.position + pos, Quaternion.identity);
+                monsterObj.transform.parent = gameObject.transform;
+            }
+        }
+
+        for (int i = 0; i < crowdTiles.Length; i++)
+        {
+            if (crowdTiles[i] != null)
+            {
+                GameObject zombieObj = Instantiate(zomStats.zombie, crowdTiles[i].transform.position + pos, Quaternion.identity);
             }
         }
     }

@@ -8,6 +8,6 @@ public class ZombieStats : ScriptableObject
 	public string zomName;
 	public float lookRange;
 	public GameObject player;
-	//public GameObject zombie;
+	public GameObject zombie;
 	public GameObject monster;
 }
