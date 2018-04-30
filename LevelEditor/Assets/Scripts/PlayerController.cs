@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -23,7 +24,6 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        rg.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         transform.rotation = Quaternion.Euler(lockRot, transform.rotation.eulerAngles.y, lockRot);
         Vector3 vectorOfMovement = MovementInput();
         Movement(vectorOfMovement);
@@ -31,6 +31,14 @@ public class PlayerController : MonoBehaviour
         if (vectorOfMovement != Vector3.zero)
         {
             transform.rotation = Turn();
+        }
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "DeathCube")
+        {
+            SceneManager.LoadScene("Level");
         }
     }
     #endregion
